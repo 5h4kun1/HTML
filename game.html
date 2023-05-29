@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>TikTok Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+    }
+
+    #game-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .box {
+      width: 100px;
+      height: 100px;
+      background-color: #ffffff;
+      border: 2px solid #333333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 24px;
+      cursor: pointer;
+      transition: background-color 0.3s ease-in-out;
+    }
+
+    .box:hover {
+      background-color: #dddddd;
+    }
+  </style>
+</head>
+<body>
+  <h1>TikTok Game</h1>
+  <div id="game-container">
+    <div class="box" onclick="makeMove(0)"></div>
+    <div class="box" onclick="makeMove(1)"></div>
+    <div class="box" onclick="makeMove(2)"></div>
+    <div class="box" onclick="makeMove(3)"></div>
+    <div class="box" onclick="makeMove(4)"></div>
+    <div class="box" onclick="makeMove(5)"></div>
+    <div class="box" onclick="makeMove(6)"></div>
+    <div class="box" onclick="makeMove(7)"></div>
+    <div class="box" onclick="makeMove(8)"></div>
+  </div>
+
+  <script>
+    var currentPlayer = "X";
+    var moves = 0;
+    var boxes = document.getElementsByClassName("box");
+
+    function makeMove(boxIndex) {
+      var box = boxes[boxIndex];
+      if (!box.textContent) {
+        box.textContent = currentPlayer;
+        box.style.pointerEvents = "none";
+        moves++;
+        if (checkWin()) {
+          alert("Player " + currentPlayer + " wins!");
+          resetGame();
+        } else if (moves === 9) {
+          alert("It's a draw!");
+          resetGame();
+        } else {
+          currentPlayer = currentPlayer === "X" ? "O" : "X";
+        }
+      }
+    }
+
+    function checkWin() {
+      var winCombinations = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6]
+      ];
+
+      for (var i = 0; i < winCombinations.length; i++) {
+        var [a, b, c] = winCombinations[i];
+        if (
+          boxes[a].textContent &&
+          boxes[a].textContent === boxes[b].textContent &&
+          boxes[a].textContent === boxes[c].textContent
+        ) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    function resetGame() {
+      for (var i = 0; i < boxes.length; i++) {
+        boxes[i].textContent = "";
+        boxes[i].style.pointerEvents = "auto";
+      }
+      currentPlayer = "X";
+      moves = 0;
+    }
+  </script>
+</body>
+</html>
